@@ -3,9 +3,6 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import javax.annotation.Nullable;
-import java.util.Optional;
-
 public class BnCFluidIngredient {
     private final TagKey<Fluid> fluidTag;
     private final FluidStack fluidIngredient ;
