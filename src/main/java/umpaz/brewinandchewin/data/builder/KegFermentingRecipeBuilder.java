@@ -33,7 +33,6 @@ public class KegFermentingRecipeBuilder {
     private final List<Ingredient> ingredients = Lists.newArrayList();
 
     private Optional<FluidStack> fluidIngredient = Optional.empty();
-   //private Optional<BnCFluidIngredient> fluidIngredientTag = Optional.empty();
 
     private Optional<Fluid> resultFluid = Optional.empty();
     private Optional<Item> resultItem = Optional.empty();
@@ -165,12 +164,6 @@ public class KegFermentingRecipeBuilder {
         fluidIngredient = Optional.of(new FluidStack(flowingFluid, i));
         return this;
     }
-    /*
-    public KegFermentingRecipeBuilder addFluidIngredientTag(TagKey<Fluid> fluidTag, int amount) {
-        fluidIngredientTag = Optional.of(new BnCFluidIngredient(fluidTag, amount));
-        return this;
-    }
-    */
 
     public void build(Consumer<FinishedRecipe> consumerIn, ResourceLocation id) {
         ResourceLocation advancementId = null;
@@ -189,7 +182,6 @@ public class KegFermentingRecipeBuilder {
         private final List<Ingredient> ingredients;
         private final Optional<FermentingRecipeBookTab> tab;
         private final Optional<FluidStack> fluidIngredient;
-        //private final Optional<BnCFluidIngredient> fluidIngredientTag;
 
         private final Optional<Item> resultItem;
         private final Optional<Fluid> resultFluid;
@@ -242,14 +234,6 @@ public class KegFermentingRecipeBuilder {
                 basefluid.addProperty("count", fluidIngredient.get().getAmount());
                 json.add("basefluid", basefluid);
             }
-            /*
-            else if (fluidIngredientTag.isPresent()) {
-                JsonObject basefluid = new JsonObject();
-                basefluid.addProperty("fluidTag", fluidIngredientTag.get().serialize());
-                basefluid.addProperty("count", fluidIngredientTag.get().getAmount());
-                json.add("basefluid", basefluid);
-            }
-            */
 
             tab.ifPresent(t -> json.addProperty("recipe_book_tab", t.name));
 
