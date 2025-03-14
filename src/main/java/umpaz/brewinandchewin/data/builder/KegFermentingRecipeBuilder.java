@@ -243,7 +243,7 @@ public class KegFermentingRecipeBuilder {
                 json.add("basefluid", basefluid);
             } else if (fluidIngredientTag.isPresent()) {
                 JsonObject basefluid = new JsonObject();
-                basefluid.addProperty("fluid", fluidIngredientTag.get().getFluidTag().location().toString());
+                basefluid.addProperty("fluidTag", fluidIngredientTag.get().serialize());
                 basefluid.addProperty("count", fluidIngredientTag.get().getAmount());
                 json.add("basefluid", basefluid);
             }
