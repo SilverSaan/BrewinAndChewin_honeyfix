@@ -22,7 +22,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import umpaz.brewinandchewin.BrewinAndChewin;
 import umpaz.brewinandchewin.client.recipebook.FermentingRecipeBookTab;
-import umpaz.brewinandchewin.common.BnCFluidIngredient;
 import umpaz.brewinandchewin.common.registry.BnCRecipeSerializers;
 
 import javax.annotation.Nullable;
@@ -34,7 +33,7 @@ public class KegFermentingRecipeBuilder {
     private final List<Ingredient> ingredients = Lists.newArrayList();
 
     private Optional<FluidStack> fluidIngredient = Optional.empty();
-    private Optional<BnCFluidIngredient> fluidIngredientTag = Optional.empty();
+   //private Optional<BnCFluidIngredient> fluidIngredientTag = Optional.empty();
 
     private Optional<Fluid> resultFluid = Optional.empty();
     private Optional<Item> resultItem = Optional.empty();
@@ -166,11 +165,12 @@ public class KegFermentingRecipeBuilder {
         fluidIngredient = Optional.of(new FluidStack(flowingFluid, i));
         return this;
     }
-
+    /*
     public KegFermentingRecipeBuilder addFluidIngredientTag(TagKey<Fluid> fluidTag, int amount) {
         fluidIngredientTag = Optional.of(new BnCFluidIngredient(fluidTag, amount));
         return this;
     }
+    */
 
     public void build(Consumer<FinishedRecipe> consumerIn, ResourceLocation id) {
         ResourceLocation advancementId = null;
@@ -180,7 +180,7 @@ public class KegFermentingRecipeBuilder {
                     .requirements(RequirementsStrategy.OR);
             advancementId = id.withPath(path -> "recipes/" + path);
         }
-        consumerIn.accept(new KegFermentingRecipeBuilder.Result(id, fluidIngredient, fluidIngredientTag, tab, resultItem, resultFluid, amount, ingredients, fermentingTime, experience, temperature, advancement, advancementId));
+        consumerIn.accept(new KegFermentingRecipeBuilder.Result(id, fluidIngredient, tab, resultItem, resultFluid, amount, ingredients, fermentingTime, experience, temperature, advancement, advancementId));
     }
 
 
@@ -189,7 +189,7 @@ public class KegFermentingRecipeBuilder {
         private final List<Ingredient> ingredients;
         private final Optional<FermentingRecipeBookTab> tab;
         private final Optional<FluidStack> fluidIngredient;
-        private final Optional<BnCFluidIngredient> fluidIngredientTag;
+        //private final Optional<BnCFluidIngredient> fluidIngredientTag;
 
         private final Optional<Item> resultItem;
         private final Optional<Fluid> resultFluid;
@@ -201,10 +201,10 @@ public class KegFermentingRecipeBuilder {
         private final ResourceLocation advancementId;
 
 
-        public Result(ResourceLocation idIn, Optional<FluidStack> fluidIngredient, Optional<BnCFluidIngredient> fluidIngredientTag , Optional<FermentingRecipeBookTab> tab, Optional<Item> resultItemIn, Optional<Fluid> resultFluidIn, int count, List<Ingredient> ingredientsIn, int fermentingTimeIn, float experienceIn, int temperatureIn, @Nullable Advancement.Builder advancement, @Nullable ResourceLocation advancementId) {
+        public Result(ResourceLocation idIn, Optional<FluidStack> fluidIngredient, Optional<FermentingRecipeBookTab> tab, Optional<Item> resultItemIn, Optional<Fluid> resultFluidIn, int count, List<Ingredient> ingredientsIn, int fermentingTimeIn, float experienceIn, int temperatureIn, @Nullable Advancement.Builder advancement, @Nullable ResourceLocation advancementId) {
             this.id = idIn;
             this.fluidIngredient = fluidIngredient;
-            this.fluidIngredientTag = fluidIngredientTag;
+            //this.fluidIngredientTag = fluidIngredientTag;
             this.tab = tab;
             this.resultItem = resultItemIn;
             this.resultFluid = resultFluidIn;
@@ -229,7 +229,7 @@ public class KegFermentingRecipeBuilder {
             JsonObject result = new JsonObject();
             if (resultItem.isPresent()) {
                 result.addProperty("item", ForgeRegistries.ITEMS.getKey(resultItem.get()).toString());
-            } else {
+            } else if (resultFluid.isPresent()){
                 result.addProperty("fluid", ForgeRegistries.FLUIDS.getKey(resultFluid.get()).toString());
             }
             result.addProperty("count", count);
@@ -241,12 +241,15 @@ public class KegFermentingRecipeBuilder {
                 basefluid.addProperty("fluid", ForgeRegistries.FLUIDS.getKey(fluidIngredient.get().getFluid()).toString());
                 basefluid.addProperty("count", fluidIngredient.get().getAmount());
                 json.add("basefluid", basefluid);
-            } else if (fluidIngredientTag.isPresent()) {
+            }
+            /*
+            else if (fluidIngredientTag.isPresent()) {
                 JsonObject basefluid = new JsonObject();
                 basefluid.addProperty("fluidTag", fluidIngredientTag.get().serialize());
                 basefluid.addProperty("count", fluidIngredientTag.get().getAmount());
                 json.add("basefluid", basefluid);
             }
+            */
 
             tab.ifPresent(t -> json.addProperty("recipe_book_tab", t.name));
 
