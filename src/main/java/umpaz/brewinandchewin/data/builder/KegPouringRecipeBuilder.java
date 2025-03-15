@@ -98,6 +98,7 @@ public class KegPouringRecipeBuilder {
         if (ForgeRegistries.ITEMS.getKey(output.getItem()).getNamespace().equals("create") || !includeCreateRecipes)
             return;
 
+        //On Honey this should be ignored because Create already uses tag forge:honey (Which BnC Honey is part of) to it's FillingRecipe
         var fillingBuilder = new ProcessingRecipeBuilder<>(FillingRecipe::new, new ResourceLocation(BrewinAndChewin.MODID, "create/" + id.getPath().replace("pouring/", "")))
                 .require(fluid, amount)
                 .require(container == null ? output.getCraftingRemainingItem().getItem() : container.getItem())
